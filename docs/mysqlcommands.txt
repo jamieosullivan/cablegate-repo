@@ -1,0 +1,9 @@
+sudo /usr/local/mysql/bin/mysqld_safe --user=mysql -p
+mysql> insert into tempsubject (refid,subject) select cable.refid,substring_index(substring(content, locate("SUBJ", cable.content), 200), "\n",1) from cable;
+mysql> select origin from cable where length(origin) = (select max(length(origin)) from cable);
+mysql> select max(length(origin)) from cable;
+mysql> show tables;
+mysql> insert into cable_summary (cab_id, cab_class) select cable.refid, cable.classification from cable;
+mysql> insert into cable_summary (cab_id, cab_summary) select refid, subject from tempsubject on duplicate key update cab_summary = tempsubject.subject;
+mysql> insert into cable_summary (cab_id, cab_summary) select subject from tempsubject where (cable_summary.cab_id = tempsubject.refid);
+
